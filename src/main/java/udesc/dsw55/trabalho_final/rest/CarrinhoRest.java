@@ -1,30 +1,39 @@
 package udesc.dsw55.trabalho_final.rest;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import jakarta.validation.Valid;
 import udesc.dsw55.trabalho_final.jpa.CarrinhoRepository;
+import udesc.dsw55.trabalho_final.jpa.ProdutoRepository;
 import udesc.dsw55.trabalho_final.model.ModelCarrinho;
+import udesc.dsw55.trabalho_final.model.ModelCarrinhoReview;
+import udesc.dsw55.trabalho_final.model.ModelProduto;
 
 @RestController
 public class CarrinhoRest {
 
 	private CarrinhoRepository repository;
-
-	public CarrinhoRest(CarrinhoRepository repository) {
+	private ProdutoRepository prodRepository;
+	
+	public CarrinhoRest(CarrinhoRepository repository, ProdutoRepository prodRepository) {
 		super();
-		this.repository = repository;	
+		this.repository = repository;
+		this.prodRepository = prodRepository;
 	}
 
 	@PostMapping("/users/{id}/carrinho")
@@ -43,15 +52,68 @@ public class CarrinhoRest {
 		return ResponseEntity.created(location).build();		
 	}	
 	
-	@GetMapping("/carrinho/{id}")
+	@GetMapping("/user/{id}/carrinho")
 	public ModelCarrinho getCarrinho(@PathVariable int id) throws Exception{
 		Optional<ModelCarrinho> carrinho = repository.findById(id);
 		if(carrinho.isEmpty()) {
-			throw new Exception("Erro: Id do carrinho não encontrado");
+			return null;
 		}
 		return carrinho.get();
 	}
 	
+	
+	@GetMapping("/user/{id}/carrinho/products")
+	public List<ModelCarrinhoReview> getProdutosByCarrinhoUser(@PathVariable int id) throws Exception{
+		List<ModelCarrinhoReview> res = new ArrayList<>();
+		
+		List<ModelCarrinho> carrinho = repository.findByUsuarioOrderByIdAsc(id);
+		if(!carrinho.isEmpty()) {
+			for (ModelCarrinho car : carrinho) {
+				Optional<ModelProduto> prod = prodRepository.findById(car.getProduto());
+				
+				ModelCarrinhoReview model = new ModelCarrinhoReview();
+				model.setId(car.getId());
+				model.setQuantidade(car.getQuantidade());
+				model.setUsuario(car.getUsuario());
+				model.setProduto(prod.get());
+				res.add(model);
+			}
+		}
+		return res;
+	}
+	
+	@DeleteMapping("/carrinho/{id}")
+	public void deleteCarrinho(@PathVariable int id) {
+		repository.deleteById(id);
+	}
+	
+	@PutMapping("/carrinho/{id}/diminui")
+	public void diminuiQuantidadeCarrinho(@PathVariable int id) throws Exception {
+		Optional<ModelCarrinho> carrinho = repository.findById(id);
+		if(carrinho.isEmpty()) {
+			throw new Exception("Erro: Id do carrinho não encontrado");
+		} else {
+			ModelCarrinho car = carrinho.get();
+			if((car.getQuantidade() - 1) >= 1) {
+				car.setQuantidade(car.getQuantidade() - 1);
+				repository.save(car);
+			}
+		}
+		
+	}
+	
+	@PutMapping("/carrinho/{id}/aumenta")
+	public void aumentarQuantidadeCarrinho(@PathVariable int id) throws Exception {
+		Optional<ModelCarrinho> carrinho = repository.findById(id);
+		if(carrinho.isEmpty()) {
+			throw new Exception("Erro: Id do carrinho não encontrado");
+		} else {
+			ModelCarrinho car = carrinho.get();
+			car.setQuantidade(car.getQuantidade() + 1);
+			repository.save(car);
+		}
+		
+	}
 	
 	
 }

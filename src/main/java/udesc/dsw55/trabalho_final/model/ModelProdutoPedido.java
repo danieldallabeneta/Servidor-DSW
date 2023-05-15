@@ -3,6 +3,7 @@ package udesc.dsw55.trabalho_final.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotNull;
 
 @Entity(name="tbprodutopedido")
 public class ModelProdutoPedido {
@@ -17,12 +18,16 @@ public class ModelProdutoPedido {
 	
 	private Integer quantidade;
 
-	public ModelProdutoPedido(Integer id, Integer pedido, Integer produto, Integer quantidade) {
+	@NotNull
+	private float preco;
+	
+	public ModelProdutoPedido(Integer id, Integer pedido, Integer produto, Integer quantidade, @NotNull float preco) {
 		super();
 		this.id = id;
 		this.pedido = pedido;
 		this.produto = produto;
 		this.quantidade = quantidade;
+		this.preco = preco;
 	}
 
 	public ModelProdutoPedido() {
@@ -61,10 +66,18 @@ public class ModelProdutoPedido {
 		this.quantidade = quantidade;
 	}
 
+	public float getPreco() {
+		return preco;
+	}
+
+	public void setPreco(float preco) {
+		this.preco = preco;
+	}
+
 	@Override
 	public String toString() {
 		return "ModelProdutoPedido [id=" + id + ", pedido=" + pedido + ", produto=" + produto + ", quantidade="
-				+ quantidade + "]";
+				+ quantidade + ", preco=" + preco + "]";
 	}
 	
 	
