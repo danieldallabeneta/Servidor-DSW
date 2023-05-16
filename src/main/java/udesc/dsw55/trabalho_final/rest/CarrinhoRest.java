@@ -1,13 +1,11 @@
 package udesc.dsw55.trabalho_final.rest;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONObject;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import jakarta.validation.Valid;
 import udesc.dsw55.trabalho_final.jpa.CarrinhoRepository;
@@ -36,20 +33,18 @@ public class CarrinhoRest {
 		this.prodRepository = prodRepository;
 	}
 
-	@PostMapping("/users/{id}/carrinho")
-	public ResponseEntity<ModelCarrinho> createUser(@PathVariable int id, @Valid @RequestBody String carrinho) throws JSONException{
+	@PostMapping("/carrinho")
+	public Boolean createUser(@Valid @RequestBody String carrinho) throws JSONException{
 		JSONObject jsonObject= new JSONObject(carrinho);
 		ModelCarrinho newCarrinho = new ModelCarrinho();		
-		newCarrinho.setUsuario(id);		
+		newCarrinho.setUsuario(jsonObject.getInt("usuario"));		
 		newCarrinho.setProduto(jsonObject.getInt("produto"));
 		newCarrinho.setQuantidade(jsonObject.getInt("quantidade"));
 		ModelCarrinho savedCarrinho = repository.save(newCarrinho);
-		URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-				.path("/{id}")
-				.buildAndExpand(savedCarrinho.getId())
-				.toUri();
-		
-		return ResponseEntity.created(location).build();		
+		if(savedCarrinho == null) {
+			return false;
+		}
+		return true;
 	}	
 	
 	@GetMapping("/user/{id}/carrinho")

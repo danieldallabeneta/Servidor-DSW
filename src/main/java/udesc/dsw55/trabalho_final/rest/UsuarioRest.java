@@ -50,12 +50,7 @@ public class UsuarioRest {
 			ModelUsuario savedUser = usuarioRepository.save(user);
 			
 			return savedUser;
-		}
-		
-		/*URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-				.path("/{id}")
-				.buildAndExpand(savedUser.getId())
-				.toUri();*/
+		}	
 		
 		return new ModelUsuario();		
 	}
