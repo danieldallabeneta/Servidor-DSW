@@ -15,6 +15,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import jakarta.validation.Valid;
 import udesc.dsw55.trabalho_final.dao.ProdutoDao;
+import udesc.dsw55.trabalho_final.jpa.ProdutoPedidoRepository;
 import udesc.dsw55.trabalho_final.jpa.ProdutoRepository;
 import udesc.dsw55.trabalho_final.model.ModelProduto;
 
@@ -22,12 +23,14 @@ import udesc.dsw55.trabalho_final.model.ModelProduto;
 public class ProdutoRest {
 
 	private ProdutoRepository repository;
-
-	public ProdutoRest(ProdutoRepository repository) {
+	private ProdutoPedidoRepository prodPedRepository;
+	
+	public ProdutoRest(ProdutoRepository repository, ProdutoPedidoRepository prodPedRepository) {
 		super();
 		this.repository = repository;
+		this.prodPedRepository = prodPedRepository;
 	}
-	
+
 	@PostMapping("/products")
 	public ResponseEntity<ModelProduto> createProduct(@Valid @RequestBody ModelProduto produto){
 		ModelProduto savedProduct = repository.save(produto);
@@ -68,5 +71,14 @@ public class ProdutoRest {
 		return null;
 	}
 	
+	@GetMapping("/topproduct")
+	public List<ModelProduto> top5Products(){
+		List<ModelProduto> lista = ProdutoDao.getTop5(repository, prodPedRepository);
+		
+		if(!lista.isEmpty()) {
+			return lista;
+		}
+		return null;
+	}
 	
 }

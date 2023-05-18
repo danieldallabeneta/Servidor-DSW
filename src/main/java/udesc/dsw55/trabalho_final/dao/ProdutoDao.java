@@ -1,10 +1,17 @@
 package udesc.dsw55.trabalho_final.dao;
 
+import java.util.Optional;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Collections;
+import java.util.Comparator;
 
+import udesc.dsw55.trabalho_final.jpa.ProdutoPedidoRepository;
 import udesc.dsw55.trabalho_final.jpa.ProdutoRepository;
 import udesc.dsw55.trabalho_final.model.ModelProduto;
+import udesc.dsw55.trabalho_final.model.ModelProdutoPedido;
 
 public class ProdutoDao {
 
@@ -22,5 +29,36 @@ public class ProdutoDao {
 		return sucess;	
 	}
 	
+	public static List<ModelProduto> getTop5(ProdutoRepository repository, ProdutoPedidoRepository prodPedRepository){
+		Map<Integer, Integer> contagem = new HashMap<>();
+		List<ModelProdutoPedido> prodPed = prodPedRepository.findAll();
+		for (ModelProdutoPedido objeto : prodPed) {			
+			boolean exist = contagem.containsKey(objeto.getProduto());
+			if(!exist) {
+				contagem.put(objeto.getProduto(), 1);
+			} else {
+				Integer valor = contagem.get(objeto.getProduto()) + 1;
+				contagem.replace(objeto.getProduto(), valor);
+			}
+		}
+		return getTopFiveProdutcs(repository, contagem);		
+	}
+	
+	private static List<ModelProduto> getTopFiveProdutcs(ProdutoRepository repository, Map<Integer, Integer> map) {
+		List<ModelProduto> sucess = new ArrayList<>();
+        List<Map.Entry<Integer, Integer>> entryList = new ArrayList<>(map.entrySet());
+
+        // Ordena a lista de acordo com os valores em ordem decrescente
+        Collections.sort(entryList, Map.Entry.comparingByValue(Comparator.reverseOrder()));
+
+        // Adiciona as chaves dos cinco primeiros elementos na lista
+        for (int i = 0; i < Math.min(entryList.size(), 5); i++) {
+            Optional<ModelProduto> prod = repository.findById(entryList.get(i).getKey());
+            sucess.add(prod.get());
+        }
+
+        return sucess;
+    }
+
 	
 }

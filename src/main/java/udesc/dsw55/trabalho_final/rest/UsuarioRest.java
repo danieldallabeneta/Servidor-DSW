@@ -108,7 +108,6 @@ public class UsuarioRest {
 			return false;
 		}
 		boolean senhaCheck =  BCrypt.checkpw(credencial.getSenha(), user.get().getPassword());
-		System.out.println(senhaCheck);
 		if(senhaCheck) {
 			return true;
 		} else {

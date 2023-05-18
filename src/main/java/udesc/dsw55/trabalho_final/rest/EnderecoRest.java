@@ -68,5 +68,13 @@ public class EnderecoRest {
 		repository.deleteById(id);
 	}
 	
+	@GetMapping("users/{id}/enderecoentrega")
+	public ModelEndereco getEnderecoEntregaByUserId(@PathVariable int id) throws Exception{
+		Optional<ModelEndereco> endereco = repository.findByUsuarioAndTipo(id, 2);
+		if(endereco.isEmpty()) {
+			throw new Exception("Erro: Id do Endereço não encontrado");
+		}
+		return endereco.get();
+	}
 	
 }

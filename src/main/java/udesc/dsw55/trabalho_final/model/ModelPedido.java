@@ -1,5 +1,9 @@
 package udesc.dsw55.trabalho_final.model;
 
+import java.time.LocalDateTime;
+
+import org.hibernate.annotations.CreationTimestamp;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -15,10 +19,12 @@ public class ModelPedido {
 	@NotNull
 	private Integer usuario;
 	
-	@NotNull
-	private String dataPedido;
+	@CreationTimestamp
+    private LocalDateTime dataPedido;
 	
 	private String situacao;
+	
+	private String pagamento;
 	
 	public ModelPedido(Integer id, Integer usuario) {
 		super();
@@ -44,11 +50,11 @@ public class ModelPedido {
 		this.usuario = usuario;
 	}
 
-	public String getDataPedido() {
+	public LocalDateTime getDataPedido() {
 		return dataPedido;
 	}
 
-	public void setDataPedido(String dataPedido) {
+	public void setDataPedido(LocalDateTime dataPedido) {
 		this.dataPedido = dataPedido;
 	}
 	
@@ -60,11 +66,18 @@ public class ModelPedido {
 		this.situacao = situacao;
 	}
 
+	public String getPagamento() {
+		return pagamento;
+	}
+
+	public void setPagamento(String pagamento) {
+		this.pagamento = pagamento;
+	}
+
 	@Override
 	public String toString() {
 		return "ModelPedido [id=" + id + ", usuario=" + usuario + ", dataPedido=" + dataPedido + ", situacao="
-				+ situacao + "]";
+				+ situacao + ", pagamento=" + pagamento + "]";
 	}
-	
-	
+
 }
