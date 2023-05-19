@@ -27,9 +27,12 @@ public class ModelProduto {
 	private float preco;
 	
 	@PositiveOrZero
-	private Integer quantidade;	
+	private Integer quantidade;
 	
-	public ModelProduto(Integer id, @Size(min = 3) String descricao, String foto, String tamanho, float preco,@PositiveOrZero Integer quantidade) {
+	private String informacao;
+	
+	public ModelProduto(Integer id, @Size(min = 3) @NotNull String descricao, String foto, @NotNull String tamanho,
+			@NotNull float preco, @PositiveOrZero Integer quantidade, String informacao) {
 		super();
 		this.id = id;
 		this.descricao = descricao;
@@ -37,6 +40,7 @@ public class ModelProduto {
 		this.tamanho = tamanho;
 		this.preco = preco;
 		this.quantidade = quantidade;
+		this.informacao = informacao;
 	}
 
 	public ModelProduto() {
@@ -91,10 +95,19 @@ public class ModelProduto {
 		this.quantidade = quantidade;
 	}
 
+	public String getInformacao() {
+		return informacao;
+	}
+
+	public void setInformacao(String informacao) {
+		this.informacao = informacao;
+	}
+
 	@Override
 	public String toString() {
 		return "ModelProduto [id=" + id + ", descricao=" + descricao + ", foto=" + foto + ", tamanho=" + tamanho
-				+ ", preco=" + preco + ", quantidade=" + quantidade + "]";
+				+ ", preco=" + preco + ", quantidade=" + quantidade + ", informacao=" + informacao + "]";
 	}
+
 	
 }
