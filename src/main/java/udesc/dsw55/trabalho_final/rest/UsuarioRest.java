@@ -106,13 +106,8 @@ public class UsuarioRest {
 		Optional<ModelUsuario> user = usuarioRepository.findByEmail(credencial.getUserEmail());		
 		if(user.isEmpty()) {
 			return false;
-		}
-		boolean senhaCheck =  BCrypt.checkpw(credencial.getSenha(), user.get().getPassword());
-		if(senhaCheck) {
-			return true;
-		} else {
-			return false;
-		}
+		} 
+		return BCrypt.checkpw(credencial.getSenha(), user.get().getPassword());
 	}
 	
 	
