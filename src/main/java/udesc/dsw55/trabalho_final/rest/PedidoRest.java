@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
-import udesc.dsw55.trabalho_final.dao.PedidoDao;
 import udesc.dsw55.trabalho_final.jpa.CarrinhoRepository;
 import udesc.dsw55.trabalho_final.jpa.EntregaPedidoRepository;
 import udesc.dsw55.trabalho_final.jpa.EntregaRepository;
@@ -326,7 +325,8 @@ public class PedidoRest {
 	
 	@GetMapping("/pedidouser/{id}")
 	public List<ModelPedido> getPedidoUsuarioById(@PathVariable int id) throws Exception{
-		List<ModelPedido> pedido = PedidoDao.getPedidoByUser(repository, id);
+		System.out.println(id);
+		List<ModelPedido> pedido = repository.findAllByUsuario(id);
 		if(pedido.isEmpty()) {
 			throw new Exception("Usuário não possui pedido");
 		} else {
@@ -335,7 +335,9 @@ public class PedidoRest {
 				ModelEntregaPedido entregaPed = entrPed.get();
 				Optional<ModelEntrega> entr = entregaRepository.findById(entregaPed.getEntrega());
 				ModelEntrega entrega = entr.get();
-				if(entrega.getDataRetorno().isAfter(LocalDateTime.now())){
+				if(entrega.getDataSaida().isAfter(LocalDateTime.now())){
+					modelPedido.setSituacao("Preparando Pedido");
+				} else if (entrega.getDataRetorno().isAfter(LocalDateTime.now()) && entrega.getDataSaida().isBefore(LocalDateTime.now())) {
 					modelPedido.setSituacao("Em trânsito");
 				} else {
 					modelPedido.setSituacao("Entregue");

@@ -8,7 +8,7 @@ public class StorageProperties {
 	/**
 	 * Folder location for storing files
 	 */
-	private String location = "C:\\Htdocs\\trabalho_final\\src\\main\\resources\\static\\uploaded";
+	private String location = "C:\\Users\\Dell\\Documents\\GitHub\\trabalho-final-dsw\\public\\img";
 
 	public String getLocation() {
 		return location;
