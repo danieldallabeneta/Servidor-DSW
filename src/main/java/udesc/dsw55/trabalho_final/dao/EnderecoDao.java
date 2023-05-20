@@ -9,6 +9,9 @@ import udesc.dsw55.trabalho_final.model.ModelEndereco;
 
 public class EnderecoDao {
 
+	/*
+	 * Retorna lista de endereço do usuario informado por parâmetro
+	 */
 	public static List<ModelEndereco> getEnderecoByUser(EnderecoRepository repo, Integer user) {
 		ModelEndereco endereco = new ModelEndereco();
 		endereco.setUsuario(user);

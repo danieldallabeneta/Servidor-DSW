@@ -7,7 +7,6 @@ import udesc.dsw55.trabalho_final.model.ModelProdutoPedido;
 
 public interface ProdutoPedidoRepository extends JpaRepository<ModelProdutoPedido, Integer>{
 	
-	List<ModelProdutoPedido> findByPedido(Integer pedido);
-	
+	List<ModelProdutoPedido> findByPedido(Integer pedido);	
 	
 }

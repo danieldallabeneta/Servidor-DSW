@@ -59,8 +59,7 @@ public class EnderecoRest {
 		if(!buscaEndereco.isEmpty()) {
 			endereco.setId(buscaEndereco.get().getId());
 			repository.save(endereco);
-		}
-		
+		}		
 	}
 	
 	@DeleteMapping("endereco/{id}")

@@ -79,8 +79,6 @@ public class PedidoRest {
 				carrinhoRepository.delete(modelCarrinho);
 			}
 			cadastrarEntrega(savedPedido);
-			
-			
 			return savedPedido;
 		}
 		throw new Exception("Não existe produtos no carrinho!");

@@ -15,6 +15,9 @@ import udesc.dsw55.trabalho_final.model.ModelProdutoPedido;
 
 public class ProdutoDao {
 
+	/*
+	 * Retorna os sucessos de venda
+	 */
 	public static List<ModelProduto> getSucessos(ProdutoRepository repo) {
 		List<ModelProduto> sucess = new ArrayList<>();
 		List<ModelProduto> res = repo.findAll();
@@ -24,11 +27,13 @@ public class ProdutoDao {
 				sucess.add(res.get(i));
 			}
 			contagem++;
-		}
-				
+		}				
 		return sucess;	
 	}
 	
+	/*
+	 * Retorna os 5 produtos mais vendidos
+	 */
 	public static List<ModelProduto> getTop5(ProdutoRepository repository, ProdutoPedidoRepository prodPedRepository){
 		Map<Integer, Integer> contagem = new HashMap<>();
 		List<ModelProdutoPedido> prodPed = prodPedRepository.findAll();
@@ -56,7 +61,6 @@ public class ProdutoDao {
             Optional<ModelProduto> prod = repository.findById(entryList.get(i).getKey());
             sucess.add(prod.get());
         }
-
         return sucess;
     }
 

@@ -54,8 +54,7 @@ public class CarrinhoRest {
 			return null;
 		}
 		return carrinho.get();
-	}
-	
+	}	
 	
 	@GetMapping("/user/{id}/carrinho/products")
 	public List<ModelCarrinhoReview> getProdutosByCarrinhoUser(@PathVariable int id) throws Exception{
@@ -93,8 +92,7 @@ public class CarrinhoRest {
 				car.setQuantidade(car.getQuantidade() - 1);
 				repository.save(car);
 			}
-		}
-		
+		}		
 	}
 	
 	@PutMapping("/carrinho/{id}/aumenta")
@@ -106,8 +104,7 @@ public class CarrinhoRest {
 			ModelCarrinho car = carrinho.get();
 			car.setQuantidade(car.getQuantidade() + 1);
 			repository.save(car);
-		}
-		
+		}		
 	}
 	
 	

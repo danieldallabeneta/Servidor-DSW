@@ -9,6 +9,9 @@ import udesc.dsw55.trabalho_final.model.ModelCarrinho;
 
 public class CarrinhoDao {
 	
+	/**
+	 * Retorna todos os modelos de carrinho cadastrados para o usuário informado por parâmetro	 
+	 */
 	public static List<ModelCarrinho> getCarrinhoByUser(CarrinhoRepository repo, Integer user) {
 		ModelCarrinho carrinho = new ModelCarrinho();
 		carrinho.setUsuario(user);

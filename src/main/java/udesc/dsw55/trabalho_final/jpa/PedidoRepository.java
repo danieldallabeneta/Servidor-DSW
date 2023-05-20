@@ -8,7 +8,6 @@ import udesc.dsw55.trabalho_final.model.ModelPedido;
 
 public interface PedidoRepository extends JpaRepository<ModelPedido, Integer>{
 
-	List<ModelPedido> findAllByUsuario(Integer usuario);
-	
+	List<ModelPedido> findAllByUsuario(Integer usuario);	
 	
 }
